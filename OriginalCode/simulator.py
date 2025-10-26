@@ -86,7 +86,7 @@ class Simulation:
         return self.time_step * SIM_TICK_TIME_SECONDS
 
 
-USE_DISPLAY = False
+USE_DISPLAY = True
 SAVE_DATA = True
 NUM_TRIALS = 1000
 GLOBAL_DESC = int(time.time())
