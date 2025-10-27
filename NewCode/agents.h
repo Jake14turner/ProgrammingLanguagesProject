@@ -65,7 +65,7 @@ public:
     user::InfectionModel* infection_model;
 
     AnimalPresence(int id, const std::map<int, LocationRecord>& migration_pattern, float radius, float hazard_rate);
-
+    AnimalPresence(const AnimalPresence& other);
     void move(Simulation* sim);
     void update(Simulation* sim);
 };
@@ -87,7 +87,7 @@ public:
     user::InfectionModel* infection_model;
 
     Human(int id, const std::map<int, LocationRecord>& location_history, const std::map<int, HumanStatus>& reports);
-
+    Human(const Human& other);
     void move(Simulation* sim);
     void update(Simulation* sim);
     int secondary_cases(Simulation* sim);

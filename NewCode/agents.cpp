@@ -95,6 +95,37 @@ AnimalPresence::AnimalPresence(int id, const std::map<int, LocationRecord>& migr
     this->infection_model = new user::InfectionModel(hazard_rate, 0.0f, 0.0f);
 }
 
+AnimalPresence::AnimalPresence(const AnimalPresence& other)
+    : id(other.id),
+      migration_pattern(other.migration_pattern),
+      location(other.location),
+      radius(other.radius),
+      infection_model(nullptr)
+{
+    if (other.infection_model) {
+        this->infection_model = new user::InfectionModel(*other.infection_model);
+    }
+}
+
+Human::Human(const Human& other)
+    : id(other.id),
+      location_history(other.location_history),
+      self_reports(other.self_reports),
+      location(other.location),
+      status(other.status),
+      prev_status(other.prev_status),
+      contact_network(other.contact_network),
+      sickness_records(other.sickness_records),
+      active_contacts(other.active_contacts),
+      infection_model(nullptr)
+{
+    // Deep copy the infection_model pointer
+    if (other.infection_model) {
+        this->infection_model = new user::InfectionModel(*other.infection_model);
+    }
+}
+
+
 void AnimalPresence::move(Simulation* sim) {
     if (!sim) return;
 

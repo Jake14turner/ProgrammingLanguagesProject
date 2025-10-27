@@ -29,6 +29,7 @@ public:
     float experienced_human_hazard;
 
     InfectionModel(float output_hazard, float experienced_animal_hazard, float experienced_human_hazard);
+    InfectionModel(const InfectionModel& other);
 
     float total_experienced_hazard();
     std::string __str__();

@@ -57,25 +57,24 @@ std::vector<AnimalPresence*> D4_ANIMALS;
 
 
 __attribute__((constructor)) void init_datasets() {
-    auto RD_H0_LOCATIONS = std::vector<std::tuple<int, float, float>>{
+    // RD Dataset
+    auto RD_H0 = build_human(0, {
         {0, 50, 150}, {30, 200, 150}, {290, 200, 150},
         {300, 300, 150}, {400, 300, 200}, {500, 300, 275}
-    };
-    auto RD_H0_REPORTS = std::vector<std::pair<int, HumanStatus>>{{310, HumanStatus::SICK}};
-    auto RD_H0 = build_human(0, RD_H0_LOCATIONS, RD_H0_REPORTS);
-
-    auto RD_H1_LOCATIONS = std::vector<std::tuple<int, float, float>>{
-        {0, 50, 350}, {260, 200, 350}, {300, 300, 350}, {400, 300, 275}, {500, 300, 200}
-    };
-    auto RD_H1_REPORTS = std::vector<std::pair<int, HumanStatus>>{{450, HumanStatus::SICK}};
-    auto RD_H1 = build_human(1, RD_H1_LOCATIONS, RD_H1_REPORTS);
-
+    }, {{310, HumanStatus::SICK}});
+    
+    auto RD_H1 = build_human(1, {
+        {0, 50, 350}, {260, 200, 350}, {300, 300, 350}, 
+        {400, 300, 275}, {500, 300, 200}
+    }, {{450, HumanStatus::SICK}});
+    
     RD_HUMANS = {RD_H0, RD_H1};
-
+    
     auto RD_A0 = build_animal(0, {{0, 200, 150}}, 40, 0.2);
     auto RD_A1 = build_animal(1, {{0, 200, 350}}, 40, 0.05);
     RD_ANIMALS = {RD_A0, RD_A1};
 
+    // D0 Dataset
     auto D0_H0 = build_human(0,
         {{0, 100, 100}, {200, 500, 100}, {400, 500, 500}, {600, 100, 500}},
         {{380, HumanStatus::SICK}});
@@ -85,18 +84,8 @@ __attribute__((constructor)) void init_datasets() {
     D0_HUMANS = {D0_H0, D0_H1};
     D0_ANIMALS = {build_animal(0, {{0, 450, 150}}, 100, 0.05)};
 
-    auto D3_H0 = build_human(0, {{0,100,100},{50,175,175},{100,250,250},{150,325,325},{200,400,400}}, {});
-    auto D3_H1 = build_human(1, {{0,500,100},{50,425,175},{100,350,250},{150,275,325},{200,200,400}}, {});
-    D3_HUMANS = {D3_H0, D3_H1};
-    D3_ANIMALS = {build_animal(0, {{0,450,150}}, 100, 0.05)};
-
-    auto D4_H0 = build_human(0, {{0,20,20},{200,200,100},{210,220,100},{400,400,100},{600,500,100}}, {{550, HumanStatus::SICK}});
-    auto D4_H1 = build_human(1, {{0,20,200},{200,200,300},{210,220,300},{400,400,300},{600,500,300}}, {{500, HumanStatus::SICK}});
-    D4_HUMANS = {D4_H0, D4_H1};
-    D4_ANIMALS = {build_animal(0, {{0,300,100}}, 45, 0.1), build_animal(1, {{0,200,100}}, 5, 0.005)};
-
-
-     auto D3_H0 = build_human(0, {
+    // D3 Dataset - FULL VERSION ONLY (remove the short version)
+    auto D3_H0 = build_human(0, {
         {0,100,100}, {50,175,175}, {100,250,250}, {150,325,325}, 
         {200,400,400}, {250,475,475}, {300,500,500}
     }, {});
@@ -137,4 +126,19 @@ __attribute__((constructor)) void init_datasets() {
     auto D3_A3 = build_animal(3, {{0,500,500}, {200,400,400}, {400,300,300}}, 60, 0.0);
     
     D3_ANIMALS = {D3_A0, D3_A1, D3_A2, D3_A3};
+
+    // D4 Dataset
+    auto D4_H0 = build_human(0, {
+        {0,20,20},{200,200,100},{210,220,100},{400,400,100},{600,500,100}
+    }, {{550, HumanStatus::SICK}});
+    
+    auto D4_H1 = build_human(1, {
+        {0,20,200},{200,200,300},{210,220,300},{400,400,300},{600,500,300}
+    }, {{500, HumanStatus::SICK}});
+    
+    D4_HUMANS = {D4_H0, D4_H1};
+    D4_ANIMALS = {
+        build_animal(0, {{0,300,100}}, 45, 0.1), 
+        build_animal(1, {{0,200,100}}, 5, 0.005)
+    };
 }

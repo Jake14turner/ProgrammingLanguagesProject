@@ -68,6 +68,13 @@ InfectionModel::InfectionModel(float output_hazard, float experienced_animal_haz
       experienced_human_hazard(experienced_human_hazard)
 {}
 
+InfectionModel::InfectionModel(const InfectionModel& other)
+    : output_hazard(other.output_hazard),
+      experienced_animal_hazard(other.experienced_animal_hazard),
+      experienced_human_hazard(other.experienced_human_hazard)
+{
+}
+
 float InfectionModel::total_experienced_hazard() {
     return experienced_animal_hazard + experienced_human_hazard;
 }
