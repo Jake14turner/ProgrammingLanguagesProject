@@ -10,6 +10,10 @@ const int FRAMES_PER_SECOND = 10;
 
 Display::Display(Simulation* sim, int width, int height)
     : simulation(sim), width(width), height(height) {
+    initialized = false;
+    window = nullptr;
+    renderer = nullptr;
+    font = nullptr;
     
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL Init Error: " << SDL_GetError() << std::endl;
@@ -26,8 +30,16 @@ Display::Display(Simulation* sim, int width, int height)
                               SDL_WINDOWPOS_CENTERED,
                               width, height,
                               SDL_WINDOW_SHOWN);
+    if (!window) {
+        std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+        return;
+    }
     
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+        return;
+    }
     
     font = TTF_OpenFont("/System/Library/Fonts/Helvetica.ttc", 15);
     if (!font) {
@@ -35,6 +47,7 @@ Display::Display(Simulation* sim, int width, int height)
     }
     
     bgColor = {255, 255, 255, 255};
+    initialized = true;
 }
 
 Display::~Display() {
@@ -42,12 +55,16 @@ Display::~Display() {
 }
 
 void Display::drawText(const std::string& text, int x, int y, SDL_Color color) {
-    if (!font) return;
+    if (!font || !renderer) return;
     
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
     if (!surface) return;
     
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!texture) {
+        SDL_FreeSurface(surface);
+        return;
+    }
     
     SDL_Rect dest = {x, y, surface->w, surface->h};
     SDL_RenderCopy(renderer, texture, nullptr, &dest);
@@ -57,6 +74,9 @@ void Display::drawText(const std::string& text, int x, int y, SDL_Color color) {
 }
 
 bool Display::render() {
+    if (!initialized || !window || !renderer) {
+        return false;
+    }
 for (const auto& [id, h] : simulation->human_agents) {
     std::cout << "  Human " << id << " at (" << h->location.x << ", " << h->location.y << ")" << std::endl;
 }
@@ -138,9 +158,10 @@ for (const auto& [id, h] : simulation->human_agents) {
 }
 
 void Display::cleanup() {
-    if (font) TTF_CloseFont(font);
-    if (renderer) SDL_DestroyRenderer(renderer);
-    if (window) SDL_DestroyWindow(window);
+    if (font) { TTF_CloseFont(font); font = nullptr; }
+    if (renderer) { SDL_DestroyRenderer(renderer); renderer = nullptr; }
+    if (window) { SDL_DestroyWindow(window); window = nullptr; }
     TTF_Quit();
     SDL_Quit();
+    initialized = false;
 }

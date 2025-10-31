@@ -17,9 +17,9 @@ namespace fs = std::filesystem;
 
 using namespace std;
 
-const bool USE_DISPLAY = true;  // Set to false for batch trials
+const bool USE_DISPLAY = true;  
 const bool SAVE_DATA = true;
-const int NUM_TRIALS = 1000;  // Start with 10 for testing, change to 1000 later
+const int NUM_TRIALS = 1000;
 const long GLOBAL_DESC = time(nullptr);
 const string MOTION_MODEL_DESC = "h_noisy_interp";
 const string DATASET_DESC = "RD";

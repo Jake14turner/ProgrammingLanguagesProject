@@ -14,6 +14,7 @@ class Display {
     SDL_Renderer* renderer;
     SDL_Color bgColor;
     TTF_Font* font;
+    bool initialized;
 
 
     Display(Simulation* sim, int width, int height);
